@@ -2,12 +2,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import type { CharacterProfile } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable not set");
-}
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 const characterSchema = {
   type: Type.OBJECT,
   properties: {
@@ -36,6 +30,16 @@ const characterSchema = {
 };
 
 export const generateCharacterProfile = async (name: string): Promise<CharacterProfile> => {
+  // Se difiere la inicialización y la comprobación de la clave al tiempo de ejecución para evitar que la aplicación se bloquee al cargar.
+  // Esta es la solución principal para el problema de la "pantalla en blanco" en Netlify.
+  // El entorno del navegador no tiene `process.env` a menos que sea inyectado por una herramienta de compilación.
+  // Al comprobar aquí, permitimos que la aplicación se cargue y muestre un error descriptivo en la interfaz de usuario.
+  if (typeof process === 'undefined' || !process.env.API_KEY) {
+      throw new Error("La configuración del servidor es incorrecta. La clave API (API_KEY) no está disponible. Por favor, contacta al administrador para configurar la variable de entorno en la plataforma de despliegue (ej. Netlify).");
+  }
+
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
   try {
     const prompt = `Crea un perfil de personaje para un Manhwa de estilo Murim. El nombre del personaje es "${name}". Genera detalles creativos y evocadores para cada categoría.`;
 
