@@ -1,0 +1,5 @@
+{
+  "name": "Copy of Creador de Leyendas Murim",
+  "description": "Una aplicación para generar perfiles de personajes de manhwa de estilo Murim a partir de un nombre, creando su historia, secta, arte marcial, y destino usando la API de Gemini.",
+  "requestFramePermissions": []
+}
