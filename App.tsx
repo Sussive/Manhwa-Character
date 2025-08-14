@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { CharacterProfile } from './types';
-import { generateCharacterProfile } from './services/geminiService';
+import { generateLocalCharacterProfile } from './services/localGeneratorService';
 import Loader from './components/Loader';
 import BrushStrokeIcon from './components/icons/BrushStrokeIcon';
 
@@ -22,7 +22,7 @@ const App: React.FC = () => {
         setCharacterName(name);
 
         try {
-            const result = await generateCharacterProfile(name);
+            const result = await generateLocalCharacterProfile(name);
             setProfile(result);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Un error desconocido ha ocurrido.';
